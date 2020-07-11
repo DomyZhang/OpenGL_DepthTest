@@ -4,10 +4,11 @@
 #include "GLTools.h"
 #include <glut/glut.h>
 
-#include "GLFrustum.h"
-#include "GLFrame.h"
-#include "GLMatrixStack.h"
-#include "GLGeometryTransform.h"
+#include "GLFrustum.h"// 矩阵工具类 设置正投影矩阵/透视投影矩阵
+#include "GLFrame.h"// 矩阵工具类 位置
+#include "GLMatrixStack.h"// 加载单元矩阵  矩阵/矩阵相乘  压栈/出栈  缩放/平移/旋转
+
+#include "GLGeometryTransform.h"// 交换管道，用来传输矩阵(视图矩阵/投影矩阵/视图投影变换矩阵)
 
 GLBatch triangleBatch;
 
@@ -40,6 +41,19 @@ void ProcessMenu(int value) {
 
         case 2:
             iDepth = !iDepth;
+            break;
+        
+        // 绘制圈圈的不同方式 - glPolygonMode - mode
+        case 3:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);// 填充
+            break;
+            
+        case 4:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);// 线
+            break;
+            
+        case 5:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);// 点
             break;
     }
 
@@ -140,6 +154,7 @@ void ChangeSize(int w,int h) {
 void RenderScene(void) {
     
     //清除窗口和深度缓冲区
+    //可以给学员演示一下不清空颜色/深度缓冲区时.渲染会造成什么问题. 残留数据
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     
@@ -229,7 +244,10 @@ int main(int argc,char* argv[]) {
     glutCreateMenu(ProcessMenu);// 右键菜单栏选项 开启关闭深度测试
     glutAddMenuEntry("Toggle cull backface",1);// 正背面剔除
     glutAddMenuEntry("Toggle depth test",2);// 深度测试的开启与否
-
+    // 绘制圈圈的不同方式 mode
+    glutAddMenuEntry("Set Fill Mode", 3);// 填充
+    glutAddMenuEntry("Set Line Mode", 4);// 线
+    glutAddMenuEntry("Set Point Mode", 5);// 点
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     
     
@@ -249,4 +267,3 @@ int main(int argc,char* argv[]) {
     
     return 0;
 }
-
