@@ -140,7 +140,6 @@ void ChangeSize(int w,int h) {
 void RenderScene(void) {
     
     //清除窗口和深度缓冲区
-    //可以给学员演示一下不清空颜色/深度缓冲区时.渲染会造成什么问题. 残留数据
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     
